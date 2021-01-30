@@ -1,0 +1,29 @@
+.toolbar-button {
+  height: 2.6875rem;
+  padding: 0.25rem 1.5rem;
+}
+
+.droppableBox {
+  width: 6rem;
+  height: 6rem;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.normal-drop-area {
+  @extend .droppableBox;
+  background: linear-gradient(to bottom, hsl(136, 54%, 38%), hsl(136, 54%, 48%));
+}
+
+.medium-drop-area {
+  @extend .droppableBox;
+  background: linear-gradient(to bottom, hsl(56, 54%, 38%), hsl(56, 54%, 48%));
+}
+
+.high-drop-area {
+  @extend .droppableBox;
+  background: linear-gradient(to bottom, hsl(10, 54%, 38%), hsl(10, 54%, 48%));
+}

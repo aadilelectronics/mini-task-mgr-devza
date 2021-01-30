@@ -1,0 +1,66 @@
+<div class="form-container">
+  <form [formGroup]="taskFormGroup" (ngSubmit)="createTask()">
+    <div class="p-fluid p-formgrid p-grid">
+      <div class="p-field p-col-12">
+        <label for="message">Message *</label>
+        <input type="text" id="message" formControlName="message" pInputText />
+      </div>
+      <div class="p-field p-col-12">
+        <label for="dueDate">Due Date</label>
+        <p-calendar
+          appendTo="body"
+          dateFormat="yy-mm-dd"
+          dataType="string"
+          [showTime]="true"
+          [showSeconds]="true"
+          [showIcon]="true"
+          inputId="dueDate"
+          formControlName="due_date"
+        ></p-calendar>
+      </div>
+      <div class="p-field p-col-12">
+        <label for="priority">Priority</label>
+        <p-dropdown
+          inputId="priority"
+          [options]="priorities"
+          formControlName="priority"
+          placeholder="Select Priority"
+        ></p-dropdown>
+      </div>
+      <div class="p-field p-col-12">
+        <label for="assignTo">Assign To</label>
+        <ng-container *ngIf="users$ | async as userList">
+          <p-dropdown
+            inputId="assignTo"
+            [options]="userList"
+            formControlName="assigned_to"
+            placeholder="Select User"
+            appendTo="body"
+          >
+          </p-dropdown>
+        </ng-container>
+      </div>
+      <div class="p-field p-col-12 p-sm-4 p-sm-offset-4 p-mt-4">
+        <button
+          type="button"
+          pButton
+          pRipple
+          class="p-button-raised p-button-secondary p-button-text p-px-3"
+          label="Cancel"
+          (click)="cancel()"
+        ></button>
+      </div>
+      <div class="p-field p-col-12 p-sm-4 p-mt-4">
+        <button
+          type="submit"
+          pButton
+          pRipple
+          class="p-button-raised p-button-success p-px-3"
+          [icon]="loading ? 'pi pi-spin pi-clock' : mode === 'create' ? 'pi pi-plus' : 'pi pi-pencil'"
+          iconPos="right"
+          label="{{ mode === 'create' ? 'Create Task' : 'Update Task' }}"
+        ></button>
+      </div>
+    </div>
+  </form>
+</div>

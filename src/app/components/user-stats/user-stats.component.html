@@ -1,0 +1,34 @@
+<p-card header="User Statistics" styleClass="p-shadow-8">
+  <ng-container *ngIf="userData$ | async as userDataList">
+    <p-table
+      #taskTable
+      [value]="userDataList"
+      [rowHover]="true"
+      styleClass="p-datatable-striped"
+      [scrollable]="true"
+      [scrollHeight]="'200px'"
+    >
+      <!---------------------------- HEADER Template ------------------------->
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Picture</th>
+          <th>User</th>
+          <th>Tasks</th>
+        </tr>
+      </ng-template>
+      <!---------------------------- BODY Template --------------------------->
+      <ng-template pTemplate="body" let-usrData>
+        <tr>
+          <td>
+            <div class="picture-div">
+              <img [src]="usrData.picture" alt="{{ usrData.name[0] }}" />
+            </div>
+          </td>
+          <td>{{ usrData.name }}</td>
+          <td>{{ usrData.taskCount }}</td>
+        </tr>
+      </ng-template>
+      <!------------------------------------------------------------------------>
+    </p-table>
+  </ng-container>
+</p-card>

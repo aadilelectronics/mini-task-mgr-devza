@@ -1,0 +1,37 @@
+<div class="page-header-div">
+  <h1>Mini Task Manager</h1>
+</div>
+<div class="p-grid p-jc-between">
+  <div class="p-col-12 p-lg-4 p-px-5">
+    <div class="p-d-flex p-flex-column p-jc-center p-ai-center">
+      <app-task-stats class="h-50 w-90"></app-task-stats>
+      <app-user-stats class="h-50 w-90 p-mt-3"></app-user-stats>
+    </div>
+  </div>
+  <div class="p-col-12 p-lg-8 p-px-5">
+    <app-task-manager></app-task-manager>
+  </div>
+</div>
+
+<p-toast key="alerts" position="bottom-right"></p-toast>
+
+<p-confirmDialog #cd [closable]="false">
+  <p-footer>
+    <button
+      type="button"
+      pButton
+      class="p-button-raised p-button-outline p-button-text p-mr-3"
+      icon="pi pi-times"
+      label="No"
+      (click)="cd.reject()"
+    ></button>
+    <button
+      type="button"
+      pButton
+      class="p-button-raised p-button-danger"
+      icon="pi pi-check"
+      label="Yes"
+      (click)="cd.accept()"
+    ></button>
+  </p-footer>
+</p-confirmDialog>

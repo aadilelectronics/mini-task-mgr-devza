@@ -1,0 +1,5 @@
+<p-card header="Tasks Statistics" styleClass="p-shadow-8">
+  <ng-container *ngIf="taskChartData$ | async as chartData">
+    <p-chart type="pie" [data]="chartData"></p-chart>
+  </ng-container>
+</p-card>

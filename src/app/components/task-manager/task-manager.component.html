@@ -1,0 +1,141 @@
+<div class="p-card p-shadow-8 p-p-4">
+  <p-toolbar #tableToolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <button
+        pButton
+        pRipple
+        label="Create New Task"
+        icon="pi pi-plus"
+        class="p-button-success p-mr-2 toolbar-button"
+        (click)="createNewTask()"
+      ></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-overlayPanel #priorityOverlay>
+    <ng-template pTemplate>
+      <div class="p-d-flex p-flex-row">
+        <div
+          pDroppable="tasks_1"
+          (onDrop)="priorityChanged(1)"
+          *ngIf="draggingPriority !== 1"
+          class="normal-drop-area p-mr-2"
+        >
+          Normal
+        </div>
+        <div
+          pDroppable="tasks_1"
+          (onDrop)="priorityChanged(2)"
+          *ngIf="draggingPriority !== 2"
+          class="medium-drop-area p-mr-2"
+        >
+          Medium
+        </div>
+        <div pDroppable="tasks_1" (onDrop)="priorityChanged(3)" *ngIf="draggingPriority !== 3" class="high-drop-area">
+          High
+        </div>
+      </div>
+    </ng-template>
+  </p-overlayPanel>
+
+  <ng-container *ngIf="tasks$ | async as taskList">
+    <p-table
+      #taskTable
+      [value]="taskList"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="['message', 'assigned_to']"
+      [rowHover]="true"
+      dataKey="id"
+      styleClass="p-datatable-striped"
+    >
+      <!--------------------------- CAPTION Template ------------------------->
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          <h3 class="p-m-0">Manage Tasks</h3>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="taskTable.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search..."
+            />
+          </span>
+        </div>
+      </ng-template>
+      <!---------------------------- HEADER Template ------------------------->
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="message">Message <p-sortIcon field="message"></p-sortIcon></th>
+          <th pSortableColumn="priority">Priority <p-sortIcon field="priority"></p-sortIcon></th>
+          <th pSortableColumn="due_date">Due Date<p-sortIcon field="due_date"></p-sortIcon></th>
+          <th pSortableColumn="assigned_to">Assigned To <p-sortIcon field="assigned_to"></p-sortIcon></th>
+          <th></th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>
+            <p-dropdown
+              [options]="priorities"
+              [(ngModel)]="selectedPriority"
+              placeholder="Priority Filter"
+              [style]="{ width: '175px' }"
+              [showClear]="true"
+              (onChange)="taskTable.filter($event.value, 'priority', 'equals')"
+              (onClearClick)="taskTable.filter('', 'message', 'equals')"
+            ></p-dropdown>
+          </th>
+          <th>
+            <p-calendar
+              appendTo="body"
+              [(ngModel)]="selectedDate"
+              placeholder="Date Filter"
+              dateFormat="yy-mm-dd"
+              dataType="string"
+              [showTime]="false"
+              [showIcon]="true"
+              [showButtonBar]="true"
+              [readonlyInput]="true"
+              (onSelect)="taskTable.filter(selectedDate, 'due_date', 'startsWith')"
+              (onClearClick)="taskTable.filter('', 'due_date', 'equals')"
+            ></p-calendar>
+          </th>
+          <th></th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <!---------------------------- BODY Template --------------------------->
+      <ng-template pTemplate="body" let-task>
+        <tr pDraggable="tasks_1" (onDragStart)="dragStart($event, task)" (onDragEnd)="dragEnd()">
+          <td>{{ task.message }}</td>
+          <td>{{ task.priority === 1 ? 'Normal' : task.priority === 2 ? 'Medium' : 'High' }}</td>
+          <td>{{ task.due_date }}</td>
+          <td>{{ task.assigned_name }}</td>
+          <td>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-warning p-mr-3"
+              (click)="editTask(task)"
+            ></button>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger"
+              (click)="deleteTask(task.id)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <!------------------------------------------------------------------------>
+    </p-table>
+  </ng-container>
+  <ng-template #noTasks>
+    <div class="card p-p-5">
+      <label>No Tasks created yet.</label>
+    </div>
+  </ng-template>
+</div>

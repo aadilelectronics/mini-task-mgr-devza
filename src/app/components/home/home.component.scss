@@ -1,0 +1,15 @@
+.page-header-div {
+  min-height: 10rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  & > h1 {
+    background: -webkit-linear-gradient(90deg, #1b8f7f, #148e98, #1d4c55, #213139);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 72px;
+  }
+}
